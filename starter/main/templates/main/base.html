@@ -1,0 +1,46 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<base href="/">
+
+	<title>Man's Pub</title>
+	<meta property="og:title" content="Man's Pub" />
+	<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+	<meta property="og:type" content="website" />
+	<meta name="description" content="">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<meta property="og:image" content="path/to/image.jpg">
+	<link rel="icon" href="img/favicon/favicon.ico">
+
+	{% block head %}
+	{% endblock head %}
+
+</head>
+
+<body>
+	<div id="main" class="container-fluid">
+		<header id="header" class="header">
+			{% include 'main/includes/header.html' %}
+		</header>
+
+		<main id="content">
+			{% block content %}
+			{% endblock content %}
+		</main>
+
+		<footer id="footer">
+			{% include 'main/includes/footer.html' %}
+		</footer>
+	</div>
+
+	<script type="text/javascript" src="{% static 'dist/main.js'%}"></script>
+</body>
+
+</html>
