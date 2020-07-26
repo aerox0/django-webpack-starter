@@ -3,8 +3,8 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-admin.site.site_header = 'Man\'s Pub Admin'
-admin.site.site_title = 'Man\'s Pub'
+admin.site.site_header = 'Webpack Starter Admin'
+admin.site.site_title = 'Webpack Starter'
 
 urlpatterns = [
 	path('', include('main.urls', namespace = 'main')),
