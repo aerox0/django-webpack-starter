@@ -1,18 +1,19 @@
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const path = require('path')
 
 const src = path.resolve(__dirname, 'main')
-const distPath = { private: path.resolve(__dirname, 'dist'), public: '/static/dist/' }
+const distPath = { dist: path.resolve(__dirname, 'dist'), public: '/static/dist/' }
 
 module.exports = {
 	mode: 'development',
 	entry: ['./main/index.js'],
 	output: {
 		filename: 'main.js',
-		path: distPath.private,
+		path: distPath.dist,
 		publicPath: distPath.public,
 	},
 	devServer: {
-		contentBase: distPath.private,
+		contentBase: distPath.dist,
 		hot: true,
 		inline: true,
 		proxy: {
@@ -26,6 +27,7 @@ module.exports = {
 		alias: {
 			'~': src,
 		},
+		modules: [path.resolve(), 'node_modules'],
 	},
 	module: {
 		rules: [
@@ -35,17 +37,35 @@ module.exports = {
 				loader: 'babel-loader',
 			},
 			{
-				test: /\.s?css$/i,
-				use: ['style-loader', 'css-loader?sourceMap=true', 'sass-loader'],
-			},
-			{
 				test: /\.s[ac]ss$/i,
-				use: ['style-loader', 'css-loader', 'sass-loader'],
+				use: [
+					'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							importLoaders: 1,
+						},
+					},
+					{
+						loader: 'postcss-loader',
+						options: {
+							sourceMap: true,
+							config: {
+								path: 'postcss.config.js',
+							},
+							plugins: [require('postcss-import'), require('tailwindcss'), require('autoprefixer')],
+						},
+					},
+					{
+						loader: 'sass-loader?sourceMap',
+					},
+				],
 			},
 			{
-				test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+				test: /\.(woff(2)?|ttf|eot|svg|png|jpg)(\?v=\d+\.\d+\.\d+)?$/,
 				use: ['file-loader'],
 			},
 		],
 	},
+	plugins: [new CleanWebpackPlugin()],
 }
