@@ -1,46 +1,44 @@
 {% load static %}
-{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<meta charset="utf-8">
-	<base href="/">
 
-	<title>Webpack Starter</title>
-	<meta property="og:title" content="Webpack Starter" />
-	<meta property="og:url" content="{{ request.build_absolute_uri }}" />
-	<meta property="og:type" content="website" />
+	<title>{% block title %}{% endblock title %}Document</title>
+
 	<meta name="description" content="">
+	<meta name="keywords" content="">
 
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-	<meta property="og:image" content="path/to/image.jpg">
-	<link rel="icon" href="{% static 'main/imgs/favicon.png' %}">
-
 	{% block head %}
+	<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'main/imgs/logo.svg' %}">
 	{% endblock head %}
+
+	<link rel="shortcut icon" href="{% static 'main/imgs/logo.svg' %}">
+
+	<meta name="theme-color" content="#000">
+	<meta name="msapplication-navbutton-color" content="#000">
+	<meta name="apple-mobile-web-app-status-bar-style" content="#000">
+
+	<link rel="stylesheet" href="{% static 'dist/main.css' %}">
 
 </head>
 
 <body>
-	<div id="main" class="container-fluid">
-		<header id="header" class="header">
-			{% include 'main/includes/header.html' %}
-		</header>
 
-		<main id="content">
-			{% block content %}
-			{% endblock content %}
-		</main>
+	<div id="app">
 
-		<footer id="footer">
-			{% include 'main/includes/footer.html' %}
-		</footer>
+		{% block content %}
+		{% endblock content %}
+
 	</div>
 
-	<script type="text/javascript" src="{% static 'dist/main.js'%}"></script>
+	<script src="{% static 'dist/main.js' %}"></script>
+
 </body>
 
 </html>
