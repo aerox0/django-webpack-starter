@@ -1,9 +1,12 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const path = require('path')
 
 const src = path.resolve(__dirname, 'main')
 const distPath = { dist: path.resolve(__dirname, 'dist'), public: '/static/dist/' }
+
+const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
 	mode: 'development',
@@ -30,6 +33,9 @@ module.exports = {
 		},
 		modules: [path.resolve(), 'node_modules'],
 	},
+	optimization: {
+		minimizer: [new OptimizeCssAssetsPlugin({})],
+	},
 	module: {
 		rules: [
 			{
@@ -41,7 +47,12 @@ module.exports = {
 				test: /\.s[ac]ss$/i,
 				use: [
 					'style-loader',
-					MiniCssExtractPlugin.loader,
+					{
+						loader: MiniCssExtractPlugin.loader,
+						options: {
+							hmr: isDev,
+						},
+					},
 					{
 						loader: 'css-loader',
 						options: {
